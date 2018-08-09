@@ -8,14 +8,10 @@ import java.util.stream.Collectors;
 
 public class Graph {
 
-    private final String id;
-    private ArrayList<Edge> edges = new ArrayList<Edge>();
+    public ArrayList<Edge> edges = new ArrayList<Edge>();
 
 
-    public Graph(String id){
-        this.id = id;
-
-    }
+    public Graph(){}
 
     public void addEdge(Node parentNode, Node childNode){
 
@@ -24,6 +20,7 @@ public class Graph {
     }
 
     public static HashSet<Node> nodeList(ArrayList<Edge> edges){
+
         HashSet<Node> nodes = new HashSet<Node>();
         for(Edge edge : edges){
             nodes.add(edge.parentNode());
@@ -33,6 +30,7 @@ public class Graph {
     }
 
     public static HashSet<Node> parentNodes(ArrayList<Edge> edges){
+
         HashSet<Node> nodes = new HashSet<Node>();
         for(Edge edge : edges)
             nodes.add(edge.parentNode());
@@ -40,6 +38,7 @@ public class Graph {
     }
 
     public static HashSet<Node> childNodes(ArrayList<Edge> edges){
+
         HashSet<Node> nodes = new HashSet<Node>();
         for(Edge edge : edges)
             nodes.add(edge.childNode());
@@ -49,7 +48,6 @@ public class Graph {
     public static HashSet<Node> orphans(ArrayList<Edge> edges){
 
         HashSet<Node> c = childNodes(edges);
-
         return parentNodes(edges)
                 .stream()
                 .filter(n -> ! c.contains(n))
@@ -57,13 +55,12 @@ public class Graph {
     }
 
     public static HashSet<Node> childrenOf(Node node, ArrayList<Edge> edges){
+
         return edges.stream()
                 .filter(e -> e.parentNode() == node)
                 .map(e -> e.childNode())
                 .collect(Collectors.toCollection(HashSet<Node>::new));
     }
-
-
 
     /*
     Khan algorithm
@@ -84,8 +81,8 @@ public class Graph {
 
     public static ArrayList<Node> sort(ArrayList<Node> sortedList, ArrayList<Edge> edges)
             throws CycleInGraphException{
-        HashSet<Node> s = orphans(edges);
 
+        HashSet<Node> s = orphans(edges);
         if(! s.isEmpty()){
 
             // first node in orphans list
@@ -108,6 +105,7 @@ public class Graph {
             // other nodes to add to sortedList
             ArrayList<Node> mms = ms.stream()
                     .filter(nn -> !childNodes(newEdges).contains(nn))
+                    .filter(nn -> !parentNodes(newEdges).contains(nn))
                     .collect(Collectors.toCollection(ArrayList<Node>::new));
 
             // add other nodes
@@ -122,7 +120,4 @@ public class Graph {
         return sortedList;
 
     }
-
-
-
 }
