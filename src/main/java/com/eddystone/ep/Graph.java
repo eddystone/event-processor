@@ -63,7 +63,7 @@ public class Graph {
     }
 
     /*
-    Khan algorithm
+    Not quite the Khan algorithm
     L ← Empty list that will contain the sorted elements
     S ← Set of all nodes with no incoming edge
     while S is non-empty do
@@ -72,7 +72,7 @@ public class Graph {
         for each node m with an edge e from n to m do
         remove edge e from the graph
             if m has no other incoming edges then
-        insert m into S
+        insert m into S (this is the bit i've done a bit differenly)
     if graph has edges then
         return error   (graph has at least one cycle)
     else
